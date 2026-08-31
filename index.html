@@ -1,0 +1,2815 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Tall Break — Bar Restaurante · Club de Tenis i Pàdel Premià de Mar</title>
+<meta name="description" content="El Tall Break, bar restaurante dentro del Club de Tenis i Pàdel de Premià de Mar. Cocina de mercado, terraza y para llevar. 4,7★ (163 reseñas). Abierto desde las 8:00h.">
+<meta name="theme-color" content="#0A0A0A">
+
+<!-- Open Graph / social -->
+<meta property="og:title" content="El Tall Break — Club de Tenis i Pàdel Premià de Mar">
+<meta property="og:description" content="Cocina de mercado, terraza junto a la pista y para llevar. 4,7★ · 163 reseñas.">
+<meta property="og:type" content="restaurant.restaurant">
+<meta property="og:locale" content="es_ES">
+
+<!-- Tipografía -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:      '#0A0A0A',
+          bgalt:   '#141414',
+          bgcard:  '#1A1A1A',
+          ink:     '#F5F1E8',
+          inkdim:  '#A8A29A',
+          clay:    '#E05A1A',
+          clay2:   '#FF7A2E',
+          gold:    '#FF9040',
+          line:    'rgba(245,241,232,0.14)',
+        },
+        fontFamily: {
+          display: ['"Bricolage Grotesque"', 'sans-serif'],
+          sans: ['Inter', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { background-color: #0A0A0A; }
+
+  ::selection { background: #E05A1A; color: #F5F1E8; }
+
+  *:focus-visible {
+    outline: 2px solid #FF9040;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* --- Líneas de pista: motivo gráfico recurrente --- */
+  .court-line { position: relative; }
+  .court-line::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245,241,232,0.22) 20%, rgba(245,241,232,0.22) 80%, transparent);
+  }
+
+  .corner-marks {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-top: 1px solid rgba(245,241,232,0.35);
+    border-left: 1px solid rgba(245,241,232,0.35);
+    top: 0; left: 0;
+  }
+
+  /* --- Números tipo marcador de pista --- */
+  .scoreboard {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  .bg-noise {
+    background-image: radial-gradient(rgba(245,241,232,0.045) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+
+  .nav-blur {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* ============ TIPOGRAFÍA / JERARQUÍA ============ */
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: #FF9040;
+  }
+  .display-tight { letter-spacing: -0.02em; }
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  /* Hero: máscara para el reveal por líneas */
+  .hero-line-mask { display: block; overflow: hidden; padding-bottom: 0.04em; }
+  .hero-line { display: block; }
+
+  /* Carrusel de fondo del hero */
+  #hero-slides .hero-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.08);
+    transition: opacity 1.4s ease-in-out;
+    filter: brightness(1.05) saturate(1.08) contrast(1.02);
+    will-change: opacity;
+  }
+  #hero-slides .hero-slide.is-active {
+    opacity: 0.9;
+    animation: hero-kenburns 8s ease-out forwards;
+  }
+  @keyframes hero-kenburns {
+    from { transform: scale(1.08); }
+    to   { transform: scale(1.16); }
+  }
+  /* Estado oculto inicial solo con JS activo; GSAP lo revela. Sin JS se ve normal. */
+  .js .hero-line { transform: translateY(110%); }
+
+  /* ============ BOTONES PREMIUM ============ */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform .45s cubic-bezier(.19,1,.22,1), box-shadow .45s ease, color .35s ease, border-color .35s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  /* Cuando el botón es magnético (ratón fino), GSAP controla el transform:
+     quitamos la transición y el lift CSS para que no compitan. */
+  .btn.is-magnetic { transition: box-shadow .45s ease, color .35s ease, border-color .35s ease; }
+  .btn.is-magnetic:hover { transform: none; }
+  .btn.is-magnetic:active { transform: none; }
+
+  /* Botón sólido con relleno deslizante */
+  .btn-solid { background: #F5F1E8; color: #0A0A0A; }
+  .btn-solid::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(120deg, #FF7A2E, #E05A1A);
+    transform: translateY(101%);
+    transition: transform .5s cubic-bezier(.19,1,.22,1);
+    z-index: -1;
+  }
+  .btn-solid:hover { color: #F5F1E8; box-shadow: 0 14px 34px -14px rgba(255,122,46,0.6); }
+  .btn-solid:hover::before { transform: translateY(0); }
+
+  /* Botón de contorno */
+  .btn-ghost {
+    border: 1px solid rgba(245,241,232,0.28);
+    color: #F5F1E8;
+    background: transparent;
+  }
+  .btn-ghost::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(245,241,232,0.06);
+    opacity: 0;
+    transition: opacity .4s ease;
+    z-index: -1;
+  }
+  .btn-ghost:hover { border-color: rgba(245,241,232,0.7); }
+  .btn-ghost:hover::before { opacity: 1; }
+
+  /* Flecha animada dentro de botones */
+  .btn .arrow { transition: transform .4s cubic-bezier(.19,1,.22,1); }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  /* ============ TARJETAS ============ */
+  .card-hover {
+    transition: transform .5s cubic-bezier(.19,1,.22,1), border-color .4s ease, background-color .4s ease, box-shadow .5s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,122,46,0.5);
+    box-shadow: 0 24px 50px -30px rgba(0,0,0,0.7);
+  }
+  .card-icon { transition: transform .5s cubic-bezier(.19,1,.22,1), color .4s ease; }
+  .card-hover:hover .card-icon { transform: scale(1.08) rotate(-4deg); }
+
+  /* Menú móvil */
+  #mobile-menu { transition: max-height .5s cubic-bezier(.19,1,.22,1), opacity .4s ease; }
+  .mobile-link { transition: color .3s ease, transform .3s ease; }
+  .mobile-link:hover { color: #F5F1E8; transform: translateX(4px); }
+
+  /* Navbar */
+  #site-nav { transition: background-color .5s ease, border-color .5s ease, height .4s ease, box-shadow .5s ease; }
+
+  /* ============ REVELADO POR SCROLL (GSAP) ============ */
+  /* Estado inicial solo si JS está activo y sin reduced-motion.
+     Si JS falla o hay reduced-motion, el contenido queda visible. */
+  .js .reveal { opacity: 0; transform: translateY(26px); }
+  .js .reveal-scale { opacity: 0; transform: scale(0.94); }
+
+  /* Barra fina de acento superior en tarjetas destacadas */
+  .accent-top { position: relative; }
+  .accent-top::after {
+    content: '';
+    position: absolute; top: 0; left: 1.75rem; right: 1.75rem;
+    height: 2px;
+    background: linear-gradient(90deg, #E05A1A, #FF9040);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .55s cubic-bezier(.19,1,.22,1);
+  }
+  .accent-top:hover::after { transform: scaleX(1); }
+
+  /* ============ LA CARTA (platos) ============ */
+  .menu-tabs {
+    display: inline-flex;
+    gap: 0.5rem;
+    padding: 0.35rem;
+    border: 1px solid rgba(245,241,232,0.14);
+    border-radius: 9999px;
+    background: rgba(20,14,11,0.5);
+  }
+  .menu-tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #A8A29A;
+    padding: 0.6rem 1.4rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: color .35s ease, background-color .35s ease;
+    white-space: nowrap;
+  }
+  .menu-tab:hover { color: #F5F1E8; }
+  .menu-tab.active {
+    color: #0A0A0A;
+    background: #FF9040;
+  }
+
+  .menu-panel { display: none; }
+  .menu-panel.active { display: block; }
+  /* En pantallas anchas, los grupos se reparten en columnas tipo masonry */
+  .menu-panel {
+    columns: 1;
+    column-gap: 3.5rem;
+  }
+  @media (min-width: 768px) {
+    .menu-panel { columns: 2; }
+  }
+  .menu-group {
+    break-inside: avoid;
+    margin-bottom: 2.75rem;
+    display: inline-block;
+    width: 100%;
+  }
+  .menu-group-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #FF9040;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,144,64,0.25);
+  }
+  .menu-item { margin-bottom: 1.05rem; }
+  .menu-item-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .menu-item-name {
+    color: #F5F1E8;
+    font-weight: 500;
+    flex-shrink: 1;
+  }
+  .menu-item-dots {
+    flex: 1;
+    border-bottom: 1px dotted rgba(245,241,232,0.22);
+    transform: translateY(-3px);
+    min-width: 1rem;
+  }
+  .menu-item-price {
+    font-family: 'IBM Plex Mono', monospace;
+    color: #FF9040;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .menu-item-desc {
+    font-size: 0.85rem;
+    color: #A8A29A;
+    font-style: italic;
+    margin-top: 0.2rem;
+    max-width: 90%;
+  }
+  .menu-group-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,144,64,0.75);
+    margin-top: 0.5rem;
+  }
+
+  /* ============ MENÚS ============ */
+  .menu-card {
+    position: relative;
+    border: 1px solid rgba(245,241,232,0.14);
+    border-radius: 1.5rem;
+    background: rgba(20,14,11,0.55);
+    backdrop-filter: blur(3px);
+    overflow: hidden;
+    transition: transform .5s cubic-bezier(.19,1,.22,1), border-color .4s ease, box-shadow .5s ease;
+  }
+  .menu-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,122,46,0.4);
+    box-shadow: 0 30px 60px -35px rgba(0,0,0,0.8);
+  }
+  /* Barra de acento superior */
+  .menu-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #E05A1A, #FF9040, transparent);
+  }
+  /* Etiqueta de bloque (A ESCOGER, GUARNICIÓN, BEBIDA) */
+  .menu-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #FF9040;
+    border: 1px solid rgba(255,144,64,0.4);
+    border-radius: 9999px;
+    padding: 0.3rem 0.9rem;
+    margin-bottom: 0.9rem;
+  }
+  .menu-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245,241,232,0.12), transparent);
+    margin: 1.75rem 0;
+  }
+  .menu-price {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: #FF7A2E;
+  }
+
+  /* ============ SISTEMA DE RESERVAS (modal multi-paso) ============ */
+  /* Variables del componente — cámbialas para adaptarlo a tu marca */
+  :root {
+    --rsv-bg: #141414;
+    --rsv-surface: #1A1A1A;
+    --rsv-ink: #F5F1E8;
+    --rsv-dim: #A8A29A;
+    --rsv-line: rgba(245,241,232,0.14);
+    --rsv-accent: #FF7A2E;
+    --rsv-accent-2: #FF9040;
+    --rsv-danger: #E0736A;
+    --rsv-radius: 1.25rem;
+    --rsv-ease: cubic-bezier(.19,1,.22,1);
+  }
+
+  #reserva-modal { transition: opacity .4s ease; }
+  #reserva-modal[hidden] { display: none; }
+  #reserva-modal .rsv-panel {
+    transition: transform .5s var(--rsv-ease), opacity .4s ease;
+  }
+  .js #reserva-modal:not(.open) .rsv-panel { transform: translateY(20px) scale(.98); opacity: 0; }
+  #reserva-modal.closing .rsv-panel { transform: translateY(16px) scale(.98); opacity: 0; }
+
+  /* Barra de progreso */
+  .rsv-progress { height: 3px; background: var(--rsv-line); border-radius: 3px; overflow: hidden; }
+  .rsv-progress-bar {
+    height: 100%;
+    width: 33.33%;
+    background: linear-gradient(90deg, var(--rsv-accent), var(--rsv-accent-2));
+    border-radius: 3px;
+    transition: width .5s var(--rsv-ease);
+  }
+  .rsv-steps-label { font-variant-numeric: tabular-nums; }
+
+  /* Contenedor de pasos: slide + fade */
+  .rsv-viewport { position: relative; overflow: hidden; }
+  .rsv-step {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity .45s ease, transform .5s var(--rsv-ease);
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+  }
+  .rsv-step.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    position: relative;
+  }
+  .rsv-step.leaving-left { opacity: 0; transform: translateX(-40px); }
+
+  /* Calendario */
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-dow {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--rsv-dim);
+    padding: 6px 0;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--rsv-ink);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color .25s ease, color .25s ease, border-color .25s ease, transform .25s var(--rsv-ease);
+    font-variant-numeric: tabular-nums;
+  }
+  .cal-day:hover:not(.disabled):not(.selected) { background: rgba(245,241,232,0.08); transform: translateY(-1px); }
+  .cal-day.disabled { color: rgba(169,179,170,0.28); cursor: not-allowed; }
+  .cal-day.empty { cursor: default; }
+  .cal-day.today:not(.selected) { border-color: rgba(255,144,64,0.5); }
+  .cal-day.selected {
+    background: linear-gradient(135deg, var(--rsv-accent), #E05A1A);
+    color: #fff;
+    font-weight: 600;
+  }
+  .cal-nav {
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 9999px;
+    color: var(--rsv-dim);
+    border: 1px solid var(--rsv-line);
+    cursor: pointer;
+    transition: color .25s ease, border-color .25s ease, background-color .25s ease;
+  }
+  .cal-nav:hover:not(:disabled) { color: var(--rsv-ink); border-color: rgba(245,241,232,0.4); }
+  .cal-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* Píldoras de hora */
+  .time-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    padding: 0.5rem 0;
+    border-radius: 9999px;
+    border: 1px solid var(--rsv-line);
+    color: var(--rsv-ink);
+    background: transparent;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color .25s ease, border-color .25s ease, color .25s ease, transform .25s var(--rsv-ease);
+    font-variant-numeric: tabular-nums;
+  }
+  .time-pill:hover:not(.selected) { border-color: rgba(255,122,46,0.5); transform: translateY(-1px); }
+  .time-pill.selected {
+    background: var(--rsv-accent-2);
+    border-color: var(--rsv-accent-2);
+    color: #0A0A0A;
+    font-weight: 600;
+  }
+
+  /* Stepper de comensales */
+  .guest-btn {
+    width: 56px; height: 56px;
+    border-radius: 9999px;
+    border: 1px solid var(--rsv-line);
+    color: var(--rsv-ink);
+    background: var(--rsv-surface);
+    font-size: 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: border-color .25s ease, background-color .25s ease, transform .2s var(--rsv-ease);
+    user-select: none;
+  }
+  .guest-btn:hover:not(:disabled) { border-color: var(--rsv-accent); transform: scale(1.06); }
+  .guest-btn:active:not(:disabled) { transform: scale(0.94); }
+  .guest-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  #guest-count { font-variant-numeric: tabular-nums; transition: transform .3s var(--rsv-ease); }
+  #guest-count.bump { transform: scale(1.15); }
+
+  /* Campos de texto */
+  .rsv-field { position: relative; }
+  .rsv-input {
+    width: 100%;
+    background: var(--rsv-surface);
+    border: 1px solid var(--rsv-line);
+    border-radius: 0.8rem;
+    color: var(--rsv-ink);
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+    transition: border-color .3s ease, box-shadow .3s ease, background-color .3s ease;
+  }
+  .rsv-input::placeholder { color: rgba(169,179,170,0.6); }
+  .rsv-input:focus {
+    outline: none;
+    border-color: var(--rsv-accent);
+    box-shadow: 0 0 0 3px rgba(255,122,46,0.14);
+  }
+  .rsv-input.invalid { border-color: var(--rsv-danger); box-shadow: 0 0 0 3px rgba(224,115,106,0.12); }
+  .rsv-input.valid { border-color: rgba(120,180,120,0.55); }
+  .rsv-label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--rsv-dim);
+    margin-bottom: 0.45rem;
+  }
+  .rsv-error {
+    font-size: 0.72rem;
+    color: var(--rsv-danger);
+    margin-top: 0.4rem;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height .3s ease, opacity .3s ease;
+  }
+  .rsv-error.show { max-height: 2rem; opacity: 1; }
+
+  /* Resumen de reserva (chips) */
+  .rsv-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--rsv-dim);
+    border: 1px solid var(--rsv-line);
+    border-radius: 9999px;
+    padding: 0.3rem 0.75rem;
+  }
+  .rsv-chip svg { color: var(--rsv-accent); }
+
+  /* Estado de éxito */
+  .rsv-check-circle {
+    width: 96px; height: 96px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, rgba(255,122,46,0.15), rgba(255,144,64,0.15));
+    border: 2px solid var(--rsv-accent-2);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+  }
+  .rsv-check-path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+  }
+  .rsv-success.animate .rsv-check-path {
+    animation: rsv-draw .6s var(--rsv-ease) .15s forwards;
+  }
+  .rsv-success.animate .rsv-check-circle {
+    animation: rsv-pop .5s var(--rsv-ease);
+  }
+  @keyframes rsv-draw { to { stroke-dashoffset: 0; } }
+  @keyframes rsv-pop {
+    0% { transform: scale(0.6); opacity: 0; }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Spinner del botón de confirmar */
+  .rsv-spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(15,26,20,0.3);
+    border-top-color: #0A0A0A;
+    border-radius: 9999px;
+    animation: rsv-spin .7s linear infinite;
+  }
+  @keyframes rsv-spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 640px) {
+    #reserva-modal .rsv-panel { border-radius: 1.25rem 1.25rem 0 0; }
+  }
+
+  /* ============ FONDO DE BRASAS GLOBAL (toda la web) ============ */
+  /* Paleta de brasa reutilizable */
+  :root {
+    --coal-0: #0A0806;   /* negro carbón base */
+    --coal-1: #0C0908;
+    --coal-2: #100A08;
+  }
+
+  /* El body pasa a carbón profundo */
+  body.embers-body { background-color: var(--coal-0); }
+
+  /* Capa fija global detrás de TODO el contenido */
+  #embers-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(130% 62% at 50% 110%, rgba(230,124,66,0.28) 0%, rgba(200,74,34,0.15) 26%, rgba(130,34,16,0.07) 46%, transparent 66%),
+      radial-gradient(100% 45% at 50% -10%, rgba(228,150,60,0.09) 0%, transparent 55%),
+      linear-gradient(180deg, var(--coal-0) 0%, var(--coal-1) 45%, var(--coal-2) 100%);
+  }
+  /* Brasas incandescentes desenfocadas, ancladas abajo del viewport */
+  #embers-bg .glow-bed {
+    position: absolute;
+    left: -8%; right: -8%; bottom: -6%;
+    height: 54%;
+    background:
+      radial-gradient(circle at 12% 96%, rgba(235,128,54,0.7) 0, rgba(235,128,54,0) 14px),
+      radial-gradient(circle at 24% 99%, rgba(255,168,66,0.62) 0, rgba(255,168,66,0) 11px),
+      radial-gradient(circle at 34% 94%, rgba(210,66,32,0.62) 0, rgba(210,66,32,0) 16px),
+      radial-gradient(circle at 46% 99%, rgba(255,188,86,0.55) 0, rgba(255,188,86,0) 10px),
+      radial-gradient(circle at 56% 95%, rgba(228,96,44,0.62) 0, rgba(228,96,44,0) 15px),
+      radial-gradient(circle at 67% 99%, rgba(255,158,64,0.6) 0, rgba(255,158,64,0) 11px),
+      radial-gradient(circle at 77% 94%, rgba(198,60,30,0.6) 0, rgba(198,60,30,0) 17px),
+      radial-gradient(circle at 88% 98%, rgba(255,176,74,0.55) 0, rgba(255,176,74,0) 10px),
+      radial-gradient(circle at 6% 99%, rgba(255,150,58,0.5) 0, rgba(255,150,58,0) 12px),
+      radial-gradient(circle at 95% 96%, rgba(220,84,40,0.55) 0, rgba(220,84,40,0) 14px);
+    filter: blur(7px);
+    opacity: 0.85;
+    animation: ember-breathe 8s ease-in-out infinite;
+    will-change: opacity;
+  }
+  /* Segunda capa de brasas, desfasada, para que el rescoldo ondule */
+  #embers-bg .glow-bed-2 {
+    position: absolute;
+    left: -8%; right: -8%; bottom: -6%;
+    height: 46%;
+    background:
+      radial-gradient(circle at 18% 92%, rgba(255,140,54,0.5) 0, rgba(255,140,54,0) 12px),
+      radial-gradient(circle at 40% 96%, rgba(220,80,36,0.45) 0, rgba(220,80,36,0) 14px),
+      radial-gradient(circle at 62% 93%, rgba(255,158,64,0.45) 0, rgba(255,158,64,0) 11px),
+      radial-gradient(circle at 83% 96%, rgba(205,66,32,0.45) 0, rgba(205,66,32,0) 15px);
+    filter: blur(11px);
+    opacity: 0.5;
+    animation: ember-breathe-2 6.5s ease-in-out infinite;
+    will-change: opacity;
+  }
+  @keyframes ember-breathe {
+    0%, 100% { opacity: 0.62; }
+    50% { opacity: 0.95; }
+  }
+  @keyframes ember-breathe-2 {
+    0%, 100% { opacity: 0.3; }
+    45% { opacity: 0.62; }
+  }
+  /* Neblina de calor: lenguas difusas que ascienden y ondulan (sin ser llamas) */
+  #embers-bg .heat-haze {
+    position: absolute;
+    left: 0; right: 0; bottom: -4%;
+    height: 60%;
+    background:
+      radial-gradient(60% 90% at 22% 100%, rgba(255,120,44,0.10) 0%, transparent 62%),
+      radial-gradient(50% 85% at 50% 100%, rgba(255,150,60,0.12) 0%, transparent 60%),
+      radial-gradient(60% 90% at 78% 100%, rgba(230,90,40,0.10) 0%, transparent 62%);
+    filter: blur(20px);
+    mix-blend-mode: screen;
+    opacity: 0.8;
+    transform-origin: 50% 100%;
+    animation: heat-rise 9s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes heat-rise {
+    0%   { transform: translateY(6%) scaleY(0.96) scaleX(1); opacity: 0.55; }
+    50%  { transform: translateY(-3%) scaleY(1.06) scaleX(1.03); opacity: 0.85; }
+    100% { transform: translateY(6%) scaleY(0.96) scaleX(1); opacity: 0.55; }
+  }
+  #embers-canvas-global {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    opacity: 0.92;
+  }
+  /* Humo global sutil */
+  #embers-bg .smoke {
+    position: absolute; inset: 0; overflow: hidden;
+    opacity: 0.4; mix-blend-mode: screen;
+  }
+  #embers-bg .smoke span {
+    position: absolute; bottom: -25%;
+    width: 55vw; height: 55vw; max-width: 720px; max-height: 720px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(120,110,105,0.14) 0%, rgba(90,80,78,0.06) 42%, transparent 70%);
+    filter: blur(28px);
+    animation: smoke-drift 34s linear infinite;
+    will-change: transform, opacity;
+  }
+  #embers-bg .smoke span:nth-child(1) { left: 6%;  animation-duration: 36s; animation-delay: 0s; }
+  #embers-bg .smoke span:nth-child(2) { left: 40%; animation-duration: 44s; animation-delay: -16s; transform: scale(1.3); }
+  #embers-bg .smoke span:nth-child(3) { left: 74%; animation-duration: 40s; animation-delay: -26s; }
+  @keyframes smoke-drift {
+    0%   { transform: translate(0,0) scale(0.9); opacity: 0; }
+    15%  { opacity: 0.45; }
+    50%  { transform: translate(3vw,-60vh) scale(1.25); opacity: 0.3; }
+    85%  { opacity: 0.1; }
+    100% { transform: translate(-2vw,-115vh) scale(1.55); opacity: 0; }
+  }
+
+  /* Veladura por sección: mantiene el texto legible sobre el fondo global.
+     Cuanto más texto, más oscura la veladura. */
+  .veil        { position: relative; }
+  .veil::before {
+    content: '';
+    position: absolute; inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  /* fuerte: secciones densas en texto (vinos, ubicación, footer) */
+  .veil-strong::before { background: rgba(9,7,6,0.82); }
+  /* media: secciones normales */
+  .veil-mid::before    { background: radial-gradient(90% 80% at 50% 45%, rgba(9,7,6,0.86) 0%, rgba(9,7,6,0.66) 60%, rgba(9,7,6,0.4) 100%); }
+  /* suave: momentos de respiro donde dejamos ver más las brasas (CTA) */
+  .veil-soft::before   { background: radial-gradient(100% 90% at 50% 60%, rgba(9,7,6,0.72) 0%, rgba(9,7,6,0.5) 70%, transparent 100%); }
+
+  /* La eyebrow en ámbar en todo el sitio conecta con las brasas */
+  .eyebrow { color: #FF9040; }
+
+  @media (max-width: 640px) {
+    #embers-bg .glow-bed { filter: blur(6px); }
+    #embers-bg .heat-haze { opacity: 0.6; }
+    #embers-bg .smoke { opacity: 0.28; }
+    #embers-bg .smoke span:nth-child(3) { display: none; }
+  }
+
+  /* ============ (compat) estilos previos de la sección Reputación ============ */
+  .embers-section { position: relative; isolation: isolate; }
+
+  /* ============ ANIMACIONES PRO (refinamiento) ============ */
+  /* Subrayado animado en los enlaces del nav (escritorio) */
+  #site-nav .nav-link {
+    position: relative;
+    padding-bottom: 2px;
+  }
+  #site-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .45s cubic-bezier(.19,1,.22,1);
+  }
+  #site-nav .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Reveal con máscara: el contenido se desvela deslizándose bajo un recorte */
+  .js .reveal-mask { overflow: hidden; }
+  .js .reveal-mask > * {
+    opacity: 0;
+    transform: translateY(105%);
+    will-change: transform, opacity;
+  }
+
+  /* Contenedor magnético: el contenido interno se mueve un pelín */
+  .magnetic { will-change: transform; }
+  .magnetic > * { will-change: transform; display: inline-flex; }
+
+  /* Brillo que recorre el botón sólido al hover */
+  .btn-solid .btn-sheen {
+    position: absolute;
+    top: 0; left: -60%;
+    width: 40%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform: skewX(-18deg);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  /* Cuando el scroll suave está activo, el body no hace su propio scroll */
+  html.has-smooth, html.has-smooth body { /* placeholder, el smooth se aplica por JS */ }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js .reveal, .js .reveal-scale,
+    .hero-line { opacity: 1 !important; transform: none !important; }
+    .js .reveal-mask > * { opacity: 1 !important; transform: none !important; }
+    .magnetic, .btn { transform: none !important; }
+    #site-nav .nav-link::after { transition: none; }
+    .btn:hover, .card-hover:hover { transform: none; }
+    .rsv-step { transition: opacity .2s ease; transform: none !important; }
+    .rsv-success.animate .rsv-check-path { animation: none; stroke-dashoffset: 0; }
+    .rsv-success.animate .rsv-check-circle { animation: none; }
+    .rsv-spinner { animation: none; }
+    #reserva-modal .rsv-panel { transition: opacity .2s ease; }
+    .js #reserva-modal:not(.open) .rsv-panel { transform: none; }
+    /* Brasas globales: estáticas pero visibles */
+    #embers-bg .glow-bed { animation: none; opacity: 0.7; }
+    #embers-bg .glow-bed-2 { animation: none; opacity: 0.4; }
+    #embers-bg .heat-haze { animation: none; opacity: 0.5; }
+    #embers-bg .smoke span { animation: none; opacity: 0.14; }
+    #embers-canvas-global { display: none; }
+  }
+</style>
+</head>
+
+<body class="embers-body bg-bg text-ink font-sans antialiased overflow-x-hidden">
+
+<!-- ============ FONDO DE BRASAS GLOBAL (toda la web) ============ -->
+<div id="embers-bg" aria-hidden="true">
+  <div class="glow-bed"></div>
+  <div class="glow-bed-2"></div>
+  <div class="heat-haze"></div>
+  <canvas id="embers-canvas-global"></canvas>
+  <div class="smoke"><span></span><span></span><span></span></div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-transparent">
+  <nav class="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-20">
+    <a href="#inicio" class="flex items-center" aria-label="El Tall Break — inicio">
+      <img src="logo-el-tall-break.png" alt="El Tall Break" class="h-9 md:h-11 w-auto" width="600" height="481">
+    </a>
+
+    <div class="hidden md:flex items-center gap-9 font-mono text-[13px] uppercase tracking-widest text-inkdim">
+      <a href="#carta" class="nav-link hover:text-ink transition-colors">La carta</a>
+      <a href="#menus" class="nav-link hover:text-ink transition-colors">Menús</a>
+      <a href="#vinos" class="nav-link hover:text-ink transition-colors">Vinos</a>
+      <a href="#opiniones" class="nav-link hover:text-ink transition-colors">Opiniones</a>
+      <a href="#ubicacion" class="nav-link hover:text-ink transition-colors">Cómo llegar</a>
+    </div>
+
+    <div class="hidden md:flex items-center gap-5">
+      <a href="https://instagram.com/eltallbreak" target="_blank" rel="noopener"
+         aria-label="Instagram de El Tall Break"
+         class="text-inkdim hover:text-clay2 transition-colors">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5.5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="tel:+34934409028" class="font-mono text-sm text-inkdim hover:text-ink transition-colors">934&nbsp;40&nbsp;90&nbsp;28</a>
+      <a href="tel:+34934409028" data-reserva class="btn btn-solid px-5 py-2.5 text-sm">
+        Reservar
+      </a>
+    </div>
+
+    <button id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden p-2 -mr-2 text-ink">
+      <svg id="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg id="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="hidden" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-bg/95 nav-blur border-t border-line">
+    <div class="flex flex-col gap-6 px-6 py-8 font-mono text-sm uppercase tracking-widest">
+      <a href="#carta" class="mobile-link">La carta</a>
+      <a href="#menus" class="mobile-link">Menús</a>
+      <a href="#vinos" class="mobile-link">Vinos</a>
+      <a href="#opiniones" class="mobile-link">Opiniones</a>
+      <a href="#ubicacion" class="mobile-link">Cómo llegar</a>
+      <a href="tel:+34934409028" class="mobile-link text-clay2">934 40 90 28</a>
+      <a href="https://instagram.com/eltallbreak" target="_blank" rel="noopener" class="mobile-link flex items-center gap-2">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+      <a href="tel:+34934409028" data-reserva class="btn btn-solid px-5 py-3 normal-case tracking-normal text-base">Reservar mesa</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="inicio" class="relative h-[100svh] min-h-[640px] flex flex-col justify-center overflow-hidden pt-32">
+  <div class="absolute inset-0" style="background:radial-gradient(120% 90% at 50% 120%, rgba(255,122,46,0.14), transparent 60%)"></div>
+  <!-- Carrusel de fondo del hero: 6 imágenes con fundido cada 4s -->
+  <div id="hero-slides" class="absolute inset-0" aria-hidden="true">
+    <img class="hero-slide is-active" src="hero-chuleton.jpg" alt="" fetchpriority="high" style="object-position: center 42%;">
+    <img class="hero-slide" data-src="hero-brasa-1.jpg" alt="" style="object-position: center 55%;">
+    <img class="hero-slide" data-src="hero-brasa-2.jpg" alt="" style="object-position: center 55%;">
+    <img class="hero-slide" data-src="hero-fideua.jpg" alt="" style="object-position: center 45%;">
+    <img class="hero-slide" data-src="hero-cocinero.jpg" alt="" style="object-position: center 40%;">
+    <img class="hero-slide" data-src="hero-chuleton2.jpg" alt="" style="object-position: center 50%;">
+    <img class="hero-slide" data-src="hero-crema.jpg" alt="" style="object-position: center 50%;">
+  </div>
+  <!-- Degradado inferior + lateral izquierdo para que el texto sea legible sobre la foto -->
+  <div class="absolute inset-0" style="background:linear-gradient(to top, #0A0806 0%, rgba(10,8,6,0.9) 28%, rgba(10,8,6,0.55) 50%, rgba(10,8,6,0.15) 74%, transparent 100%)"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to right, rgba(10,8,6,0.8) 0%, rgba(10,8,6,0.4) 38%, rgba(10,8,6,0.08) 62%, transparent 100%)"></div>
+  <div class="absolute inset-0 bg-noise opacity-30"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10 py-12">
+    <p id="hero-eyebrow" class="eyebrow mt-12 mb-6 md:text-sm">
+      Club de Tenis i Pàdel · Premià de Mar
+    </p>
+
+    <h1 class="font-display font-semibold leading-[0.9] display-tight text-[15vw] md:text-[7.2vw] lg:text-[6.6rem]">
+      <span class="hero-line-mask"><span class="hero-line">El Tall</span></span>
+      <span class="hero-line-mask"><span class="hero-line">Break</span></span>
+    </h1>
+
+    <p id="hero-sub" class="mt-7 max-w-lg text-lg md:text-xl text-inkdim leading-relaxed">
+      El break de verdad empieza aquí: cocina de mercado, terraza junto a la pista
+      y la calma de después del partido.
+    </p>
+
+    <div id="hero-actions" class="mt-9 flex flex-wrap gap-4">
+      <a href="#carta" class="btn btn-solid px-7 py-3.5">
+        Ver la carta <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="tel:+34934409028" data-reserva class="btn btn-ghost px-7 py-3.5">
+        Reservar mesa
+      </a>
+    </div>
+
+    <div id="hero-facts" class="mt-12 flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs md:text-sm text-inkdim border-t border-line pt-6">
+      <span class="flex items-center gap-1.5"><span class="text-gold">★ 4,7</span>&nbsp;/ 163 reseñas</span>
+      <span>20–30&nbsp;€ ticket medio</span>
+      <span>Abierto desde las 8:00h</span>
+      <span>Comer allí · Para llevar</span>
+    </div>
+  </div>
+
+  <!-- Indicador de scroll -->
+  <div id="scroll-cue" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-inkdim/60" aria-hidden="true">
+    <span class="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="14" height="22" rx="7"/><line id="scroll-dot" x1="8" y1="6" x2="8" y2="10"/></svg>
+  </div>
+</section>
+
+<!-- ============ LA CARTA ============ -->
+<section id="carta" class="veil veil-strong relative py-28 md:py-36 court-line overflow-hidden">
+  <div class="corner-marks top-8 left-6 md:left-10"></div>
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="max-w-2xl reveal mb-12">
+      <p class="eyebrow mb-5">La carta</p>
+      <h2 class="font-display font-semibold text-5xl md:text-7xl leading-[0.95] display-tight">
+        Restaurante y <span class="text-clay2">brasería</span>
+      </h2>
+      <p class="mt-6 text-inkdim leading-relaxed md:text-lg">
+        Cocina de mercado y producto a la brasa. Aquí tienes nuestra carta completa;
+        el pescado del día y algún plato de temporada pueden variar.
+      </p>
+    </div>
+
+    <!-- Pestañas Entrantes / A la carta -->
+    <div class="menu-tabs reveal" role="tablist" aria-label="Secciones de la carta">
+      <button class="menu-tab active" data-tab="entrantes" role="tab" aria-selected="true">Entrantes</button>
+      <button class="menu-tab" data-tab="carta" role="tab" aria-selected="false">A la carta</button>
+    </div>
+
+    <div class="menu-panels mt-12">
+        <div class="menu-panel active" data-panel="entrantes">
+<div class="menu-group">
+            <h4 class="menu-group-title">Para picar</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Bravas 'El Tall Break'</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">6,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Almejas al vapor / a la marinera</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">13,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Gambas al ajillo</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">15,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Gamba roja de Huelva a la brasa</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">18,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Pulpo a la gallega</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">21,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Salteado de sepia</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">20,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Rejos</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">10,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Rabas</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">8,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Calamares a la andaluza</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">7,00€<span class="text-inkdim/60 text-sm">/100gr</span></span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Tabla de quesos</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">18,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Tabla de embutidos</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">18,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Empanada argentina casera</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">3,80€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Sobrasada con miel y sus torraditas</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">11,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Nachos de la casa con guacamole</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">13,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Torreznos de Soria</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">11,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Huevos estrellados con jamón ibérico</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">14,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Plato de jamón ibérico</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">22,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Provolone con tomate seco</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">9,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Tortilla de patata con bacalao</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">13,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Tortilla de patata con sobrasada</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">13,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Carpaccio de buey angus con parmesano y vinagreta de mostaza</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">13,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Carpaccio de gambón con vinagreta de ceps</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">17,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Stracciatella de burrata, fresas y jamón de pato</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">15,00€</span>
+              </div>
+              
+            </div>
+            </div>
+            
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Croquetas</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Jamón ibérico de bellota</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">2,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Pulled pork y cebolla caramelizada</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">2,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Cocido</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">8,00€<span class="text-inkdim/60 text-sm"> (5 ud.)</span></span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Gorgonzola y nueces</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">2,50€</span>
+              </div>
+              
+            </div>
+            </div>
+            
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Quesadillas</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Quesadilla de pollo</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">12,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Quesadilla de atún</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">12,00€</span>
+              </div>
+              
+            </div>
+            </div>
+            
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Torradas</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Sobrasada</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">12,00€</span>
+              </div>
+              <p class="menu-item-desc">Queso de cabra fundido con sobrasada y miel</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Ibérica</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">14,00€</span>
+              </div>
+              <p class="menu-item-desc">Jamón ibérico con queso brie y mermelada de higos</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Brie</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">12,00€</span>
+              </div>
+              <p class="menu-item-desc">Champiñones salteados con queso brie fundido y bacon crujiente</p>
+            </div>
+            </div>
+            
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Briox</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Briox de steak tartar</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">20,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Hamburguesa de ternera</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">14,50€</span>
+              </div>
+              <p class="menu-item-desc">Con queso de cabra, champiñones y bacon crujiente</p>
+            </div>
+            </div>
+            
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Ensaladas</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Mixta tradicional</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">9,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Cabra</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">11,00€</span>
+              </div>
+              <p class="menu-item-desc">Queso de cabra, cherry, frutos secos y vinagreta</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">César</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">12,50€</span>
+              </div>
+              <p class="menu-item-desc">Pollo crujiente, picatostes, parmesano y salsa César casera</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Boniato</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">12,50€</span>
+              </div>
+              <p class="menu-item-desc">Boniato asado, atún y vegetales frescos</p>
+            </div>
+            </div>
+            
+          </div>
+        </div>
+        <div class="menu-panel" data-panel="carta">
+<div class="menu-group">
+            <h4 class="menu-group-title">Brasa</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Churrasco</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">14,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Escalopa de pollo</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">8,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Secreto ibérico</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">15,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Entraña</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">13,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Chuletón</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">36,00€<span class="text-inkdim/60 text-sm"> (500gr)</span></span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Chuletón de vaca gallega</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">65,00€</span>
+              </div>
+              <p class="menu-item-desc">Madurado 31 días (1kg)</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Muslo de pollo</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">10,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Careta de cerdo</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">8,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Entrecot</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">21,00€<span class="text-inkdim/60 text-sm"> (350g)</span></span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Cordero a la brasa</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">18,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Abanico ibérico de bellota</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">15,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Lagarto ibérico de bellota</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">18,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Solomillo de ternera</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">23,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Picaña de vaca gallega</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">75€<span class="text-inkdim/60 text-sm">/kg</span></span>
+              </div>
+              <p class="menu-item-desc">Madurada 60 días (250gr aprox)</p>
+            </div>
+            </div>
+            <p class="menu-group-note">Todos los platos incluyen guarnición</p>
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Cuchara</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Callos</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">9,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Galta</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">14,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Ternera en salsa</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">12,50€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Rabo de toro</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">15,00€</span>
+              </div>
+              
+            </div>
+            </div>
+            
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Pescados</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Pata de pulpo sobre parmentier</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">21,00€</span>
+              </div>
+              <p class="menu-item-desc">De patata y aceite de pimentón de la vera (200gr)</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Rodaballo al horno</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">P/S/M</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Escórpora crujiente con dos salsas</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">P/S/M</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Pargo al horno</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">P/S/M</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Consultar por los pescados del día</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">P/S/M</span>
+              </div>
+              
+            </div>
+            </div>
+            <p class="menu-group-note">Todos los platos incluyen guarnición · P/S/M: precio según mercado · Por encargo</p>
+          </div>
+<div class="menu-group">
+            <h4 class="menu-group-title">Pastas y arroces</h4>
+            <div class="menu-items">
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Espaguetis</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">23,00€</span>
+              </div>
+              <p class="menu-item-desc">A la crema de bogavante</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Pasta fresca</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">19,00€</span>
+              </div>
+              <p class="menu-item-desc">A la crema de foie y jamón ibérico</p>
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Fideuà de marisco</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">22,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Paella de almeja y calamar</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">24,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Paella de gamba roja y vieira</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">30,00€</span>
+              </div>
+              
+            </div>
+<div class="menu-item">
+              <div class="menu-item-head">
+                <span class="menu-item-name">Arroz caldoso o seco de bogavante</span>
+                <span class="menu-item-dots" aria-hidden="true"></span>
+                <span class="menu-item-price">31,00€</span>
+              </div>
+              
+            </div>
+            </div>
+            <p class="menu-group-note">Mínimo 2 pax (precio por persona) en arroces y fideuà</p>
+          </div>
+        </div>
+    </div>
+
+    <!-- Postres -->
+    <div class="reveal mt-12 rounded-2xl border border-line p-8 md:p-10 text-center" style="background:rgba(20,14,11,0.5)">
+      <span class="menu-tag">Postres</span>
+      <p class="text-ink md:text-lg mt-2">Nuestros postres son caseros.</p>
+      <p class="text-inkdim">Pregunta por las opciones del día.</p>
+    </div>
+
+    <p class="reveal mt-10 font-mono text-[11px] uppercase tracking-widest text-inkdim/60 text-center">
+      Si tienes alguna alergia o intolerancia alimentaria, consúltalo con nuestro equipo
+    </p>
+  </div>
+</section>
+
+<!-- ============ MENÚS ============ -->
+<section id="menus" class="veil veil-mid relative py-28 md:py-36 court-line overflow-hidden">
+  <div class="corner-marks top-8 left-6 md:left-10"></div>
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="max-w-2xl reveal mb-14">
+      <p class="eyebrow mb-5">Menús</p>
+      <h2 class="font-display font-semibold text-5xl md:text-7xl leading-[0.95] display-tight">
+        A la <span class="text-clay2">brasa</span>
+      </h2>
+      <p class="mt-6 text-inkdim leading-relaxed md:text-lg">
+        Nuestras ofertas fijas, hechas a la brasa. Empezamos por lo mejor de la mañana:
+        el desayuno del que todos hablan.
+      </p>
+    </div>
+
+    <!-- Tarjeta de menú: Oferta Desayuno -->
+    <div class="reveal max-w-3xl">
+      <article class="menu-card p-8 md:p-12">
+        <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.28em] text-inkdim/70 mb-3">De 8:30h a 12:00h</p>
+            <h3 class="font-display font-semibold text-3xl md:text-4xl leading-tight display-tight">
+              Oferta desayuno <span class="text-clay2">brasa</span>
+            </h3>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-x-12 gap-y-2">
+          <!-- Columna izquierda: a escoger -->
+          <div>
+            <span class="menu-tag">A escoger</span>
+            <ul class="space-y-1.5 text-inkdim md:text-lg">
+              <li>Butifarra</li>
+              <li>Panceta</li>
+              <li>Lomo</li>
+              <li>Pollo</li>
+              <li>Bacon</li>
+            </ul>
+          </div>
+
+          <!-- Columna derecha: guarnición + bebida -->
+          <div class="mt-8 md:mt-0">
+            <span class="menu-tag">Guarnición</span>
+            <p class="text-inkdim md:text-lg mb-8">Patatas fritas y huevo</p>
+
+            <span class="menu-tag">Bebida</span>
+            <p class="text-inkdim md:text-lg">Copa de cerveza · Copa de vino · Agua</p>
+          </div>
+        </div>
+
+        <div class="menu-divider"></div>
+
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <div class="flex items-baseline gap-3">
+            <span class="menu-price text-6xl md:text-7xl">12€</span>
+            <span class="font-mono text-xs uppercase tracking-widest text-inkdim/70 mb-2">Café y pan<br>incluido</span>
+          </div>
+          <a href="tel:+34934409028" data-reserva class="btn btn-solid px-7 py-3.5">
+            Reservar <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Tarjeta de menú: Menú de comida -->
+    <div class="reveal max-w-3xl mt-8">
+      <article class="menu-card p-8 md:p-12">
+        <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.28em] text-inkdim/70 mb-3">Menú del mediodía</p>
+            <h3 class="font-display font-semibold text-3xl md:text-4xl leading-tight display-tight">
+              Menú de <span class="text-clay2">comida</span>
+            </h3>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-6 mb-2">
+          <div>
+            <span class="menu-tag">Primero</span>
+            <p class="text-inkdim md:text-lg">A escoger</p>
+          </div>
+          <div>
+            <span class="menu-tag">Segundo</span>
+            <p class="text-inkdim md:text-lg">A escoger</p>
+          </div>
+          <div>
+            <span class="menu-tag">Postre</span>
+            <p class="text-inkdim md:text-lg">A escoger</p>
+          </div>
+        </div>
+
+        <div class="menu-divider"></div>
+
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <div class="flex flex-wrap items-end gap-x-10 gap-y-4">
+            <div class="flex items-baseline gap-3">
+              <span class="menu-price text-5xl md:text-6xl">16€</span>
+              <span class="font-mono text-xs uppercase tracking-widest text-inkdim/70 mb-1.5">Entre<br>semana</span>
+            </div>
+            <div class="flex items-baseline gap-3">
+              <span class="menu-price text-5xl md:text-6xl">30€</span>
+              <span class="font-mono text-xs uppercase tracking-widest text-inkdim/70 mb-1.5">Fin de<br>semana</span>
+            </div>
+          </div>
+          <a href="tel:+34934409028" data-reserva class="btn btn-solid px-7 py-3.5">
+            Reservar <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p class="font-mono text-[11px] uppercase tracking-widest text-inkdim/60 mt-6">Primero · Segundo · Postre · Bebida incluida</p>
+      </article>
+    </div>
+
+    <!-- Tarjeta de menú: Menú de grupos -->
+    <div class="reveal max-w-3xl mt-8">
+      <article class="menu-card p-8 md:p-12">
+        <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.28em] text-inkdim/70 mb-3">Celebraciones y eventos</p>
+            <h3 class="font-display font-semibold text-3xl md:text-4xl leading-tight display-tight">
+              Menú de <span class="text-clay2">grupos</span>
+            </h3>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-x-8 gap-y-3 mb-2">
+          <span class="menu-tag">A partir de 10 personas</span>
+          <span class="menu-tag">Desde 35€ por persona</span>
+        </div>
+
+        <p class="text-inkdim leading-relaxed md:text-lg mt-4 max-w-xl">
+          ¿Comida de empresa, cumpleaños o celebración? Contacta con el restaurante y
+          te enviamos los menús de grupo y las ofertas disponibles, adaptados a tu
+          ocasión y número de comensales.
+        </p>
+
+        <div class="menu-divider"></div>
+
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="tel:+34934409028" class="btn btn-solid px-7 py-3.5">
+            Llamar al 934 40 90 28 <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="tel:+34934409028" data-reserva class="btn btn-ghost px-7 py-3.5">
+            Reservar <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p class="font-mono text-[11px] uppercase tracking-widest text-inkdim/60 mt-6">Consulta menús y ofertas de grupo · Reserva con antelación</p>
+      </article>
+    </div>
+
+    <!-- Aquí puedes añadir más tarjetas de menú en el futuro (cenas...) -->
+  </div>
+</section>
+
+<!-- ============ CARTA DE VINOS (enlace externo) ============ -->
+<section id="vinos" class="veil veil-soft relative py-28 md:py-36 court-line overflow-hidden">
+  <div class="corner-marks top-8 left-6 md:left-10"></div>
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="max-w-2xl reveal">
+      <p class="eyebrow mb-5">Wine Break</p>
+      <h2 class="font-display font-semibold text-5xl md:text-7xl leading-[0.95] display-tight">
+        Carta de <span class="text-clay2">vinos</span>
+      </h2>
+      <p class="mt-6 text-inkdim leading-relaxed md:text-lg">
+        Una selección corta y bien pensada: bodegas de aquí y de allá, para acompañar
+        la sobremesa o brindar después del partido. Consulta la carta completa,
+        siempre actualizada, con precios por copa y por botella.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="https://tusumiller.isumi.es/rest-tall-break-69d67493cb716/list" target="_blank" rel="noopener"
+           class="btn btn-solid px-8 py-4 text-lg">
+          Ver la carta de vinos <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <span class="font-mono text-xs uppercase tracking-widest text-inkdim/60">
+          Se abre en una pestaña nueva
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REPUTACIÓN ============ -->
+<section id="opiniones" class="veil veil-mid relative py-28 md:py-36 court-line overflow-hidden">
+  <div class="corner-marks top-8 left-6 md:left-10"></div>
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <p class="eyebrow mb-5">Reputación</p>
+      <h2 class="font-display font-semibold text-4xl md:text-5xl leading-tight display-tight">
+        La nota la pone quien viene a jugar.
+      </h2>
+    </div>
+
+    <div class="flex flex-col items-center mb-16 reveal-scale">
+      <p id="score-number" class="scoreboard text-8xl md:text-[9rem] font-semibold leading-none" data-count="4.7">4,7</p>
+      <div class="flex gap-1 mt-4 text-gold" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.4 4.6L18 22l-6-3.8L6 22l1.4-7.8L2 9.6 9 9z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.4 4.6L18 22l-6-3.8L6 22l1.4-7.8L2 9.6 9 9z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.4 4.6L18 22l-6-3.8L6 22l1.4-7.8L2 9.6 9 9z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.4 4.6L18 22l-6-3.8L6 22l1.4-7.8L2 9.6 9 9z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.4"><path d="M12 2l3 7 7 .6-5.4 4.6L18 22l-6-3.8L6 22l1.4-7.8L2 9.6 9 9z"/></svg>
+      </div>
+      <p class="font-mono text-sm text-inkdim mt-4 uppercase tracking-widest">Sobre 5 · 163 reseñas en Google</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5" data-stagger>
+      <blockquote class="reveal card-hover rounded-2xl border border-line p-8" style="background:rgba(20,14,11,0.55);backdrop-filter:blur(2px)">
+        <p class="text-inkdim leading-relaxed italic">"El arroz del mediodía y la terraza son la mejor forma de terminar un partido."</p>
+        <cite class="block not-italic font-mono text-xs uppercase tracking-widest text-inkdim/70 mt-5">— Socio del club</cite>
+      </blockquote>
+      <blockquote class="reveal card-hover rounded-2xl border border-line p-8" style="background:rgba(20,14,11,0.55);backdrop-filter:blur(2px)">
+        <p class="text-inkdim leading-relaxed italic">"Pedimos para llevar entre set y set, siempre listo a tiempo."</p>
+        <cite class="block not-italic font-mono text-xs uppercase tracking-widest text-inkdim/70 mt-5">— Habitual de pádel</cite>
+      </blockquote>
+      <blockquote class="reveal card-hover rounded-2xl border border-line p-8" style="background:rgba(20,14,11,0.55);backdrop-filter:blur(2px)">
+        <p class="text-inkdim leading-relaxed italic">"Ambiente relajado, trato cercano y buena relación calidad-precio."</p>
+        <cite class="block not-italic font-mono text-xs uppercase tracking-widest text-inkdim/70 mt-5">— Comida de domingo</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UBICACIÓN ============ -->
+<section id="ubicacion" class="veil veil-mid relative py-28 md:py-36 court-line">
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-stretch">
+
+      <div class="reveal">
+        <p class="eyebrow mb-5">Cómo llegar</p>
+        <h2 class="font-display font-semibold text-4xl md:text-5xl leading-[1.05] display-tight mb-8">
+          Dentro del Club de<br>Tenis i Pàdel
+        </h2>
+
+        <div class="space-y-6 font-mono text-sm">
+          <div class="flex gap-4 border-t border-line pt-5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-clay2 shrink-0 mt-0.5" aria-hidden="true"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <p class="text-inkdim leading-relaxed">Av. Torrent Castells, 23<br>08330 Premià de Mar · Barcelona</p>
+          </div>
+          <div class="flex gap-4 border-t border-line pt-5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-clay2 shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            <p class="text-inkdim leading-relaxed">Dom y lun: 8:00h – 20:00h<br>Mar a sáb: 8:00h – 00:00h</p>
+          </div>
+          <div class="flex gap-4 border-t border-line pt-5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-clay2 shrink-0 mt-0.5" aria-hidden="true"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v4a2 2 0 01-2 2C9.4 21 3 14.6 3 6a2 2 0 012-2z"/></svg>
+            <a href="tel:+34934409028" class="text-inkdim hover:text-ink transition-colors leading-relaxed">934 40 90 28</a>
+          </div>
+        </div>
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Av.+Torrent+Castells+23+08330+Premi%C3%A0+de+Mar"
+           target="_blank" rel="noopener"
+           class="btn btn-ghost mt-10 px-7 py-3.5">
+          Cómo llegar <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="reveal min-h-[380px] rounded-2xl overflow-hidden border border-line">
+        <iframe
+          src="https://www.google.com/maps?q=Av.+Torrent+Castells+23+08330+Premi%C3%A0+de+Mar&output=embed"
+          class="w-full h-full min-h-[380px] grayscale-[35%] contrast-[1.05]"
+          style="border:0;"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ubicación de El Tall Break en el Club de Tenis i Pàdel de Premià de Mar">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="veil veil-soft relative py-24 md:py-32 border-t border-line overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-r from-clay/10 via-transparent to-transparent"></div>
+  <div class="relative max-w-7xl mx-auto px-6 md:px-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
+    <h2 class="reveal font-display font-semibold text-4xl md:text-6xl leading-[1.02] display-tight max-w-xl">
+      ¿Reservamos<br>tu mesa?
+    </h2>
+    <div class="reveal shrink-0">
+      <p class="text-inkdim mb-4">Te la guardamos para antes o después del partido.</p>
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="tel:+34934409028" data-reserva class="btn btn-solid px-8 py-4 text-lg">
+          Reservar online <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="tel:+34934409028" class="btn btn-ghost scoreboard px-6 py-4 text-lg">
+          934 40 90 28
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODAL DE RESERVAS (multi-paso) ============ -->
+<div id="reserva-modal" hidden class="fixed inset-0 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="rsv-title">
+  <div id="reserva-overlay" class="absolute inset-0 bg-bg/80 nav-blur"></div>
+
+  <div class="rsv-panel relative w-full sm:max-w-md bg-bgalt border border-line sm:rounded-2xl rounded-t-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
+    <!-- Cabecera -->
+    <div class="px-6 sm:px-7 pt-6 pb-4 border-b border-line shrink-0">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="eyebrow mb-1.5">Reserva tu mesa</p>
+          <h3 id="rsv-title" class="font-display font-semibold text-2xl leading-tight display-tight">El Tall Break</h3>
+        </div>
+        <button id="rsv-close" aria-label="Cerrar" class="shrink-0 -mr-1 p-2 rounded-full text-inkdim hover:text-ink hover:bg-ink/10 transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <!-- Progreso -->
+      <div class="mt-5 flex items-center gap-3">
+        <div class="rsv-progress flex-1"><div id="rsv-progress-bar" class="rsv-progress-bar"></div></div>
+        <span class="rsv-steps-label font-mono text-xs text-inkdim"><span id="rsv-step-num">1</span>/3</span>
+      </div>
+    </div>
+
+    <!-- Cuerpo scrollable -->
+    <div class="rsv-viewport flex-1 overflow-y-auto px-6 sm:px-7 py-6">
+
+      <!-- PASO 1: Fecha y hora -->
+      <div class="rsv-step active" data-step="1">
+        <label class="rsv-label">Elige una fecha</label>
+        <div class="bg-bgcard border border-line rounded-xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <button id="cal-prev" class="cal-nav" aria-label="Mes anterior">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <p id="cal-title" class="font-display font-semibold text-base capitalize"></p>
+            <button id="cal-next" class="cal-nav" aria-label="Mes siguiente">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="cal-grid mb-1" aria-hidden="true">
+            <div class="cal-dow">Lu</div><div class="cal-dow">Ma</div><div class="cal-dow">Mi</div>
+            <div class="cal-dow">Ju</div><div class="cal-dow">Vi</div><div class="cal-dow">Sa</div><div class="cal-dow">Do</div>
+          </div>
+          <div id="cal-days" class="cal-grid" role="grid" aria-label="Días del mes"></div>
+        </div>
+
+        <div id="time-block" class="mt-6 opacity-40 pointer-events-none transition-opacity duration-300">
+          <label class="rsv-label">Turno <span id="time-hint" class="text-inkdim/50 normal-case tracking-normal">· selecciona antes una fecha</span></label>
+          <div id="time-pills" class="grid grid-cols-4 gap-2.5"></div>
+        </div>
+      </div>
+
+      <!-- PASO 2: Comensales -->
+      <div class="rsv-step" data-step="2">
+        <label class="rsv-label">¿Cuántos sois?</label>
+        <div class="bg-bgcard border border-line rounded-xl p-8 flex flex-col items-center">
+          <div class="flex items-center gap-8">
+            <button id="guest-minus" class="guest-btn" aria-label="Quitar un comensal">−</button>
+            <div class="text-center">
+              <p id="guest-count" class="scoreboard text-6xl font-semibold text-gold leading-none">2</p>
+              <p id="guest-word" class="font-mono text-xs uppercase tracking-widest text-inkdim mt-2">Comensales</p>
+            </div>
+            <button id="guest-plus" class="guest-btn" aria-label="Añadir un comensal">+</button>
+          </div>
+          <p class="text-xs text-inkdim/70 mt-6 text-center max-w-xs leading-relaxed">Para grupos de más de 12 personas, llámanos y lo organizamos contigo.</p>
+        </div>
+      </div>
+
+      <!-- PASO 3: Datos + confirmación -->
+      <div class="rsv-step" data-step="3">
+        <!-- Resumen -->
+        <div id="rsv-summary" class="flex flex-wrap gap-2 mb-6"></div>
+
+        <div class="space-y-4">
+          <div class="rsv-field">
+            <label class="rsv-label" for="rsv-name">Nombre completo</label>
+            <input id="rsv-name" type="text" class="rsv-input" placeholder="Tu nombre" autocomplete="name" required>
+            <p class="rsv-error" data-for="rsv-name">Indícanos tu nombre.</p>
+          </div>
+          <div class="rsv-field">
+            <label class="rsv-label" for="rsv-email">Email</label>
+            <input id="rsv-email" type="email" class="rsv-input" placeholder="tu@email.com" autocomplete="email" required>
+            <p class="rsv-error" data-for="rsv-email">Introduce un email válido.</p>
+          </div>
+          <div class="rsv-field">
+            <label class="rsv-label" for="rsv-phone">Teléfono</label>
+            <input id="rsv-phone" type="tel" class="rsv-input" placeholder="600 000 000" autocomplete="tel" inputmode="tel" required>
+            <p class="rsv-error" data-for="rsv-phone">Introduce un teléfono válido (9 dígitos).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉXITO -->
+      <div id="rsv-success" class="rsv-success hidden text-center py-8">
+        <div class="rsv-check-circle">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FF9040" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path class="rsv-check-path" d="M4 12.5l5 5L20 6.5"/>
+          </svg>
+        </div>
+        <h4 class="font-display font-semibold text-2xl mt-6 display-tight">¡Reserva solicitada!</h4>
+        <p id="rsv-success-detail" class="text-inkdim mt-3 leading-relaxed max-w-xs mx-auto"></p>
+        <p class="text-xs text-inkdim/60 mt-5 font-mono">Te enviaremos la confirmación por email.</p>
+        <button id="rsv-done" class="btn btn-solid px-8 py-3 mt-8">Perfecto</button>
+      </div>
+
+    </div>
+
+    <!-- Pie con navegación -->
+    <div id="rsv-footer" class="px-6 sm:px-7 py-4 border-t border-line shrink-0 flex items-center gap-3">
+      <button id="rsv-back" class="btn btn-ghost px-5 py-3 hidden">Atrás</button>
+      <button id="rsv-next" class="btn btn-solid flex-1 py-3" disabled>Continuar <span class="arrow" aria-hidden="true">→</span></button>
+      <button id="rsv-submit" class="btn btn-solid flex-1 py-3 hidden">Confirmar reserva</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="veil veil-strong border-t border-line pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="grid md:grid-cols-4 gap-10 pb-14">
+      <div class="md:col-span-2">
+        <img src="logo-el-tall-break.png" alt="El Tall Break" class="w-52 h-auto mb-4 -ml-1" width="600" height="481">
+        <p class="text-inkdim text-sm max-w-xs leading-relaxed">Bar restaurante dentro del Club de Tenis i Pàdel de Premià de Mar. Cocina de mercado, terraza y para llevar.</p>
+      </div>
+
+      <div>
+        <p class="font-mono text-xs uppercase tracking-widest text-inkdim/70 mb-4">Contacto</p>
+        <ul class="space-y-2.5 text-sm text-inkdim">
+          <li><a href="tel:+34934409028" class="hover:text-ink transition-colors">934 40 90 28</a></li>
+          <li>Av. Torrent Castells, 23</li>
+          <li>08330 Premià de Mar, Barcelona</li>
+          <li><a href="https://instagram.com/eltallbreak" target="_blank" rel="noopener" class="hover:text-ink transition-colors">Instagram ↗</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="font-mono text-xs uppercase tracking-widest text-inkdim/70 mb-4">Horario</p>
+        <ul class="space-y-2.5 text-sm text-inkdim">
+          <li>Dom y lun: 8:00h – 20:00h</li>
+          <li>Mar a sáb: 8:00h – 00:00h</li>
+          <li>Comer allí · Para llevar</li>
+          <li>★ 4,7 — 163 reseñas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-line pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-inkdim/60 font-mono">
+      <p>© 2026 El Tall Break. Todos los derechos reservados.</p>
+      <p>Premià de Mar, Barcelona</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SCRIPTS ============ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js" defer></script>
+
+<script>
+  // Marca "js" en <html> para activar los estados iniciales de las animaciones.
+  // Si el JS no cargara, .reveal nunca se oculta y el contenido se ve igual.
+  document.documentElement.classList.add('js');
+</script>
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', function () {
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var hasGSAP = window.gsap && window.ScrollTrigger;
+
+    // Envoltorio defensivo: un init que falle no debe romper el resto.
+    function safe(fn, name) {
+      try { fn(); } catch (e) { console.warn('[El Tall Break] init "' + name + '" falló:', e); }
+    }
+
+    /* ---------- Navbar: fondo y sombra al hacer scroll ---------- */
+    safe(function initNav() {
+      var nav = document.getElementById('site-nav');
+      if (!nav) return;
+      function onScroll() {
+        var scrolled = window.scrollY > 40;
+        nav.classList.toggle('bg-bg/90', scrolled);
+        nav.classList.toggle('nav-blur', scrolled);
+        nav.classList.toggle('border-line', scrolled);
+        nav.classList.toggle('h-20', true);
+        nav.style.boxShadow = scrolled ? '0 10px 30px -20px rgba(0,0,0,0.8)' : 'none';
+      }
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }, 'nav');
+
+    /* ---------- Menú móvil ---------- */
+    safe(function initMobileMenu() {
+      var toggle = document.getElementById('menu-toggle');
+      var menu = document.getElementById('mobile-menu');
+      var iconOpen = document.getElementById('icon-open');
+      var iconClose = document.getElementById('icon-close');
+      if (!toggle || !menu) return;
+      var isOpen = false;
+
+      function setMenu(open) {
+        isOpen = open;
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+        menu.style.maxHeight = open ? menu.scrollHeight + 'px' : '0px';
+        menu.style.opacity = open ? '1' : '0';
+        iconOpen.classList.toggle('hidden', open);
+        iconClose.classList.toggle('hidden', !open);
+      }
+      setMenu(false);
+
+      toggle.addEventListener('click', function () { setMenu(!isOpen); });
+      // Recalcular alto si se abre y cambia el viewport
+      window.addEventListener('resize', function () { if (isOpen) menu.style.maxHeight = menu.scrollHeight + 'px'; });
+      // Cerrar al pulsar un enlace
+      menu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () { setMenu(false); });
+      });
+      // Cerrar con Escape
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isOpen) { setMenu(false); toggle.focus(); }
+      });
+    }, 'mobileMenu');
+
+    /* ---------- SISTEMA DE RESERVAS (multi-paso) ---------- */
+    safe(function initReservas() {
+      var modal = document.getElementById('reserva-modal');
+      if (!modal) return;
+      var overlay = document.getElementById('reserva-overlay');
+      var panel = modal.querySelector('.rsv-panel');
+      var closeBtn = document.getElementById('rsv-close');
+      var steps = Array.prototype.slice.call(modal.querySelectorAll('.rsv-step'));
+      var progressBar = document.getElementById('rsv-progress-bar');
+      var stepNum = document.getElementById('rsv-step-num');
+      var footer = document.getElementById('rsv-footer');
+      var backBtn = document.getElementById('rsv-back');
+      var nextBtn = document.getElementById('rsv-next');
+      var submitBtn = document.getElementById('rsv-submit');
+      var successEl = document.getElementById('rsv-success');
+      var lastFocus = null;
+
+      var state = { step: 1, date: null, time: null, guests: 2, name: '', email: '', phone: '' };
+      var MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+      var TIMES = ['13:00','13:30','14:00','14:30','15:00','20:00','20:30','21:00','21:30','22:00'];
+
+      /* ----- Calendario ----- */
+      var calDays = document.getElementById('cal-days');
+      var calTitle = document.getElementById('cal-title');
+      var calPrev = document.getElementById('cal-prev');
+      var calNext = document.getElementById('cal-next');
+      var today = new Date(); today.setHours(0,0,0,0);
+      var viewMonth = today.getMonth();
+      var viewYear = today.getFullYear();
+      var maxDate = new Date(today); maxDate.setMonth(maxDate.getMonth() + 3); // reservas hasta 3 meses vista
+
+      function sameDay(a, b) { return a && b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+
+      function renderCalendar() {
+        calTitle.textContent = MONTHS[viewMonth] + ' ' + viewYear;
+        calDays.innerHTML = '';
+        var first = new Date(viewYear, viewMonth, 1);
+        var startDow = (first.getDay() + 6) % 7; // lunes = 0
+        var daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+        for (var i = 0; i < startDow; i++) {
+          var e = document.createElement('div'); e.className = 'cal-day empty'; calDays.appendChild(e);
+        }
+        for (var d = 1; d <= daysInMonth; d++) {
+          var cell = document.createElement('div');
+          var date = new Date(viewYear, viewMonth, d);
+          cell.className = 'cal-day';
+          cell.textContent = d;
+          cell.setAttribute('role', 'gridcell');
+          var isPast = date < today;
+          var isFuture = date > maxDate;
+          if (isPast || isFuture) {
+            cell.classList.add('disabled');
+          } else {
+            cell.tabIndex = 0;
+            (function (date, cell) {
+              function pick() {
+                calDays.querySelectorAll('.cal-day.selected').forEach(function (x){ x.classList.remove('selected'); });
+                cell.classList.add('selected');
+                state.date = date;
+                enableTimes();
+                validateStep();
+              }
+              cell.addEventListener('click', pick);
+              cell.addEventListener('keydown', function (ev){ if (ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); pick(); } });
+            })(date, cell);
+          }
+          if (sameDay(date, today)) cell.classList.add('today');
+          if (sameDay(date, state.date)) cell.classList.add('selected');
+          calDays.appendChild(cell);
+        }
+        // límites de navegación
+        calPrev.disabled = (viewYear === today.getFullYear() && viewMonth === today.getMonth());
+        calNext.disabled = (viewYear === maxDate.getFullYear() && viewMonth === maxDate.getMonth());
+      }
+      calPrev.addEventListener('click', function () {
+        if (calPrev.disabled) return;
+        viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCalendar();
+      });
+      calNext.addEventListener('click', function () {
+        if (calNext.disabled) return;
+        viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar();
+      });
+
+      /* ----- Horas ----- */
+      var timeBlock = document.getElementById('time-block');
+      var timePills = document.getElementById('time-pills');
+      var timeHint = document.getElementById('time-hint');
+      TIMES.forEach(function (t) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'time-pill'; b.textContent = t;
+        b.addEventListener('click', function () {
+          timePills.querySelectorAll('.time-pill.selected').forEach(function (x){ x.classList.remove('selected'); });
+          b.classList.add('selected');
+          state.time = t;
+          validateStep();
+        });
+        timePills.appendChild(b);
+      });
+      function enableTimes() {
+        timeBlock.classList.remove('opacity-40', 'pointer-events-none');
+        if (timeHint) timeHint.textContent = '';
+      }
+
+      /* ----- Comensales ----- */
+      var guestCount = document.getElementById('guest-count');
+      var guestWord = document.getElementById('guest-word');
+      var minus = document.getElementById('guest-minus');
+      var plus = document.getElementById('guest-plus');
+      var MIN_G = 1, MAX_G = 12;
+      function renderGuests() {
+        guestCount.textContent = state.guests;
+        guestWord.textContent = state.guests === 1 ? 'Comensal' : 'Comensales';
+        minus.disabled = state.guests <= MIN_G;
+        plus.disabled = state.guests >= MAX_G;
+        guestCount.classList.add('bump');
+        setTimeout(function(){ guestCount.classList.remove('bump'); }, 300);
+      }
+      minus.addEventListener('click', function(){ if (state.guests > MIN_G){ state.guests--; renderGuests(); } });
+      plus.addEventListener('click', function(){ if (state.guests < MAX_G){ state.guests++; renderGuests(); } });
+
+      /* ----- Validación de campos (tiempo real) ----- */
+      var fields = {
+        'rsv-name':  function (v){ return v.trim().length >= 2; },
+        'rsv-email': function (v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
+        'rsv-phone': function (v){ return /^[0-9\s+]{9,15}$/.test(v.trim()) && (v.replace(/\D/g,'').length >= 9); }
+      };
+      function checkField(id, showError) {
+        var input = document.getElementById(id);
+        var ok = fields[id](input.value);
+        var err = modal.querySelector('.rsv-error[data-for="' + id + '"]');
+        if (input.value.trim() === '') {
+          input.classList.remove('valid','invalid');
+          if (err) err.classList.remove('show');
+          return false;
+        }
+        input.classList.toggle('valid', ok);
+        input.classList.toggle('invalid', !ok);
+        if (err) err.classList.toggle('show', !ok && showError);
+        return ok;
+      }
+      Object.keys(fields).forEach(function (id) {
+        var input = document.getElementById(id);
+        input.addEventListener('input', function () { checkField(id, false); validateStep(); });
+        input.addEventListener('blur', function () { checkField(id, true); });
+      });
+
+      /* ----- Validación por paso: habilita/deshabilita el botón principal ----- */
+      function stepValid(step) {
+        if (step === 1) return !!(state.date && state.time);
+        if (step === 2) return state.guests >= MIN_G && state.guests <= MAX_G;
+        if (step === 3) return Object.keys(fields).every(function (id){ return fields[id](document.getElementById(id).value); });
+        return false;
+      }
+      function validateStep() {
+        var valid = stepValid(state.step);
+        if (state.step < 3) nextBtn.disabled = !valid;
+        else submitBtn.disabled = !valid;
+      }
+
+      /* ----- Navegación entre pasos ----- */
+      function goToStep(n, dir) {
+        var current = steps[state.step - 1];
+        var target = steps[n - 1];
+        if (current === target) return;
+        current.classList.remove('active');
+        if (dir === 'forward') current.classList.add('leaving-left');
+        // preparar entrada
+        target.style.transform = dir === 'forward' ? 'translateX(40px)' : 'translateX(-40px)';
+        target.classList.add('active');
+        void target.offsetWidth;
+        target.style.transform = '';
+        setTimeout(function () { current.classList.remove('leaving-left'); }, 500);
+
+        state.step = n;
+        stepNum.textContent = n;
+        progressBar.style.width = (n / 3 * 100) + '%';
+
+        backBtn.classList.toggle('hidden', n === 1);
+        nextBtn.classList.toggle('hidden', n === 3);
+        submitBtn.classList.toggle('hidden', n !== 3);
+
+        if (n === 3) buildSummary();
+        validateStep();
+        // foco al primer control relevante
+        if (n === 3) setTimeout(function(){ document.getElementById('rsv-name').focus(); }, 300);
+      }
+      nextBtn.addEventListener('click', function () { if (stepValid(state.step)) goToStep(state.step + 1, 'forward'); });
+      backBtn.addEventListener('click', function () { if (state.step > 1) goToStep(state.step - 1, 'back'); });
+
+      /* ----- Resumen en el paso 3 ----- */
+      function fmtDate(d) {
+        return d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0,3) + '.';
+      }
+      function buildSummary() {
+        var s = document.getElementById('rsv-summary');
+        var ico = {
+          cal: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>',
+          clock: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+          users: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>'
+        };
+        s.innerHTML =
+          '<span class="rsv-chip">' + ico.cal + fmtDate(state.date) + '</span>' +
+          '<span class="rsv-chip">' + ico.clock + state.time + '</span>' +
+          '<span class="rsv-chip">' + ico.users + state.guests + (state.guests===1?' persona':' personas') + '</span>';
+      }
+
+      /* ----- Envío ----- */
+      submitBtn.addEventListener('click', function () {
+        if (!stepValid(3)) { Object.keys(fields).forEach(function(id){ checkField(id, true); }); return; }
+        state.name = document.getElementById('rsv-name').value.trim();
+        state.email = document.getElementById('rsv-email').value.trim();
+        state.phone = document.getElementById('rsv-phone').value.trim();
+
+        // Estado "enviando"
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="rsv-spinner"></span>';
+
+        // NOTA: Aquí conectarías con tu backend / email / API de reservas.
+        // Se simula la confirmación con un pequeño retardo.
+        setTimeout(function () { showSuccess(); }, 900);
+      });
+
+      function showSuccess() {
+        steps.forEach(function (st){ st.classList.remove('active'); });
+        footer.classList.add('hidden');
+        successEl.classList.remove('hidden');
+        document.getElementById('rsv-success-detail').textContent =
+          'Mesa para ' + state.guests + (state.guests===1?' persona':' personas') +
+          ' el ' + fmtDate(state.date) + ' a las ' + state.time + '.';
+        void successEl.offsetWidth;
+        successEl.classList.add('animate');
+      }
+      document.getElementById('rsv-done').addEventListener('click', closeReserva);
+
+      /* ----- Abrir / cerrar ----- */
+      function openReserva() {
+        lastFocus = document.activeElement;
+        modal.hidden = false;
+        renderCalendar();
+        renderGuests();
+        void modal.offsetWidth;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+      }
+      function resetReserva() {
+        state = { step: 1, date: null, time: null, guests: 2, name:'', email:'', phone:'' };
+        steps.forEach(function (st, i){ st.classList.toggle('active', i===0); st.classList.remove('leaving-left'); });
+        successEl.classList.add('hidden'); successEl.classList.remove('animate');
+        footer.classList.remove('hidden');
+        backBtn.classList.add('hidden');
+        nextBtn.classList.remove('hidden'); nextBtn.disabled = true;
+        nextBtn.innerHTML = 'Continuar <span class="arrow" aria-hidden="true">→</span>';
+        submitBtn.classList.add('hidden'); submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Confirmar reserva';
+        stepNum.textContent = '1';
+        progressBar.style.width = '33.33%';
+        timeBlock.classList.add('opacity-40','pointer-events-none');
+        if (timeHint) timeHint.textContent = '· selecciona antes una fecha';
+        timePills.querySelectorAll('.selected').forEach(function(x){ x.classList.remove('selected'); });
+        ['rsv-name','rsv-email','rsv-phone'].forEach(function(id){
+          var el=document.getElementById(id); el.value=''; el.classList.remove('valid','invalid');
+        });
+        modal.querySelectorAll('.rsv-error').forEach(function(e){ e.classList.remove('show'); });
+      }
+      function closeReserva() {
+        modal.classList.remove('open');
+        modal.classList.add('closing');
+        var done = function () {
+          modal.hidden = true;
+          modal.classList.remove('closing');
+          document.body.style.overflow = '';
+          resetReserva();
+          if (lastFocus && lastFocus.focus) lastFocus.focus();
+        };
+        if (reduce) done(); else setTimeout(done, 320);
+      }
+
+      // Enganchar todos los disparadores
+      document.querySelectorAll('[data-reserva]').forEach(function (t) {
+        t.addEventListener('click', function (e) { e.preventDefault(); openReserva(); });
+      });
+      closeBtn.addEventListener('click', closeReserva);
+      overlay.addEventListener('click', closeReserva);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) closeReserva();
+      });
+
+      // Enter avanza de paso cuando es válido (pasos 1 y 2)
+      modal.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && state.step < 3 && !nextBtn.disabled && e.target.tagName !== 'BUTTON') {
+          e.preventDefault(); goToStep(state.step + 1, 'forward');
+        }
+      });
+    }, 'reservas');
+
+    /* ---------- LA CARTA: pestañas Entrantes / A la carta ---------- */
+    safe(function initMenuTabs() {
+      var tabs = document.querySelectorAll('.menu-tab');
+      var panels = document.querySelectorAll('.menu-panel');
+      if (!tabs.length) return;
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var target = tab.getAttribute('data-tab');
+          tabs.forEach(function (t) {
+            var on = t === tab;
+            t.classList.toggle('active', on);
+            t.setAttribute('aria-selected', String(on));
+          });
+          panels.forEach(function (pnl) {
+            pnl.classList.toggle('active', pnl.getAttribute('data-panel') === target);
+          });
+          if (hasGSAP && !reduce) {
+            var active = document.querySelector('.menu-panel.active');
+            if (active) {
+              gsap.fromTo(active.querySelectorAll('.menu-group'),
+                { opacity: 0, y: 14 },
+                { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.05, overwrite: true });
+            }
+            if (window.ScrollTrigger) ScrollTrigger.refresh();
+          }
+        });
+      });
+    }, 'menuTabs');
+
+    /* ---------- HERO: carrusel de fondo (fundido cada 4s) ---------- */
+    safe(function initHeroSlides() {
+      var wrap = document.getElementById('hero-slides');
+      if (!wrap) return;
+      var slides = Array.prototype.slice.call(wrap.querySelectorAll('.hero-slide'));
+      if (slides.length < 2) return;
+
+      // Lazy-load: cargar cada imagen (data-src) justo antes de necesitarla
+      function load(slide) {
+        if (slide && slide.dataset.src && !slide.getAttribute('src')) {
+          slide.src = slide.dataset.src;
+        }
+      }
+      load(slides[1]); // precargar la segunda para una primera transición fluida
+
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return; // se queda la primera imagen fija
+
+      var i = 0;
+      var INTERVAL = 4000;
+      var timer = setInterval(next, INTERVAL);
+
+      function next() {
+        var current = slides[i];
+        var ni = (i + 1) % slides.length;
+        var nextSlide = slides[ni];
+        load(nextSlide);
+        load(slides[(ni + 1) % slides.length]); // precargar la siguiente-siguiente
+        current.classList.remove('is-active');
+        nextSlide.classList.add('is-active');
+        i = ni;
+      }
+
+      // Pausar cuando la pestaña no está visible
+      document.addEventListener('visibilitychange', function () {
+        clearInterval(timer);
+        if (!document.hidden) timer = setInterval(next, INTERVAL);
+      });
+    }, 'heroSlides');
+
+    /* ---------- FONDO DE BRASAS GLOBAL: ceniza flotante + chispas (canvas fijo) ---------- */
+    safe(function initEmbers() {
+      var canvas = document.getElementById('embers-canvas-global');
+      if (!canvas) return;
+      if (reduce) return; // respeta prefers-reduced-motion (el CSS ya lo oculta)
+      var ctx = canvas.getContext('2d');
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = 0, H = 0, particles = [], running = false, rafId = null;
+      var isMobile = window.matchMedia('(max-width: 640px)').matches;
+      var t = 0; // reloj global para turbulencia
+
+      function resize() {
+        W = window.innerWidth; H = window.innerHeight;
+        canvas.width = Math.floor(W * dpr);
+        canvas.height = Math.floor(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildParticles();
+      }
+
+      function buildParticles() {
+        var area = W * H;
+        // Más densidad de ceniza (divisor menor = más partículas)
+        var target = Math.round(area / (isMobile ? 24000 : 14000));
+        target = Math.max(24, Math.min(target, isMobile ? 60 : 150));
+        particles = [];
+        for (var i = 0; i < target; i++) particles.push(newParticle(true));
+      }
+
+      function newParticle(anywhere) {
+        var roll = Math.random();
+        var kind;
+        if (roll < 0.14) kind = 'spark';       // 14% chispas ámbar
+        else if (roll < 0.30) kind = 'flake';   // 16% hojuelas grandes (primer plano)
+        else kind = 'ash';                       // 70% ceniza fina
+        var big = kind === 'flake';
+        return {
+          x: Math.random() * W,
+          y: anywhere ? Math.random() * H : H + 12,
+          r: kind === 'spark' ? (0.7 + Math.random() * 1.0)
+             : big ? (1.6 + Math.random() * 2.2)
+             : (0.7 + Math.random() * 1.6),
+          vy: -(0.12 + Math.random() * (kind === 'spark' ? 0.55 : big ? 0.22 : 0.34)),
+          vx: (Math.random() - 0.5) * 0.3,
+          life: 0,
+          maxLife: 300 + Math.random() * 460,
+          kind: kind,
+          drift: Math.random() * Math.PI * 2,
+          driftSpeed: 0.004 + Math.random() * 0.012,
+          driftAmp: 0.25 + Math.random() * 0.7,        // amplitud del vaivén
+          rot: Math.random() * Math.PI * 2,            // rotación inicial
+          rotSpeed: (Math.random() - 0.5) * 0.06,      // giro de la hojuela
+          flick: Math.random() * Math.PI * 2,          // fase de parpadeo
+          flickSpeed: 0.04 + Math.random() * 0.09,
+          shade: 190 + Math.floor(Math.random() * 40)  // tono de gris variable
+        };
+      }
+
+      function draw() {
+        t += 1;
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.life++;
+          p.drift += p.driftSpeed;
+          p.rot += p.rotSpeed;
+          p.flick += p.flickSpeed;
+
+          // Movimiento orgánico: deriva sinusoidal + turbulencia global sutil
+          var turb = Math.sin((p.y * 0.01) + t * 0.008) * 0.15;
+          p.x += p.vx + Math.sin(p.drift) * p.driftAmp + turb;
+          p.y += p.vy;
+          // ligera aceleración ascendente (las cenizas ganan algo de "termal")
+          p.vy -= 0.0004;
+
+          var lifeRatio = p.life / p.maxLife;
+          var depthGlow = Math.min(1, (p.y / H));       // más brillo cerca de las brasas (abajo)
+          var fade = Math.sin(Math.min(lifeRatio, 1) * Math.PI); // aparición/desvanecimiento
+          var twinkle = 0.7 + Math.sin(p.flick) * 0.3;  // parpadeo de opacidad
+
+          if (p.kind === 'spark') {
+            var fl = 0.65 + Math.sin(p.life * 0.3) * 0.35;
+            var a = fade * 0.9 * (0.5 + depthGlow * 0.5) * twinkle;
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(255,' + Math.floor(150 + fl * 60) + ',' + Math.floor(50 + fl * 30) + ',' + a.toFixed(3) + ')';
+            ctx.shadowColor = 'rgba(255,140,50,0.9)';
+            ctx.shadowBlur = 7;
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          } else if (p.kind === 'flake') {
+            // hojuela de ceniza: rombo que gira, semitransparente (primer plano, da profundidad)
+            var af = fade * 0.32 * (0.5 + depthGlow * 0.5) * twinkle;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = 'rgba(' + p.shade + ',' + (p.shade - 6) + ',' + (p.shade - 12) + ',' + af.toFixed(3) + ')';
+            var s = p.r;
+            ctx.beginPath();
+            ctx.moveTo(0, -s); ctx.lineTo(s * 0.7, 0); ctx.lineTo(0, s); ctx.lineTo(-s * 0.7, 0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          } else {
+            // ceniza fina: punto con parpadeo, más visible que antes
+            var aa = fade * 0.6 * (0.45 + depthGlow * 0.55) * twinkle;
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(' + p.shade + ',' + (p.shade - 5) + ',' + (p.shade - 10) + ',' + aa.toFixed(3) + ')';
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          if (p.y < -14 || p.life > p.maxLife || p.x < -24 || p.x > W + 24) {
+            particles[i] = newParticle(false);
+          }
+        }
+        if (running) rafId = requestAnimationFrame(draw);
+      }
+
+      function start() { if (!running) { running = true; rafId = requestAnimationFrame(draw); } }
+      function stop() { running = false; if (rafId) cancelAnimationFrame(rafId); }
+
+      // Pausa cuando la pestaña no está visible (ahorra batería/CPU)
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) stop(); else start();
+      });
+
+      var rt;
+      window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(resize, 200); }, { passive: true });
+      resize();
+      start();
+    }, 'embers');
+
+    /* ---------- Sin GSAP o con reduced-motion: mostrar todo y salir ---------- */
+    if (!hasGSAP || reduce) {
+      document.querySelectorAll('.reveal, .reveal-scale, .hero-line').forEach(function (el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      document.querySelectorAll('.reveal-mask > *').forEach(function (el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ===== Sistema de easing y duración coherente ===== */
+    var EASE = 'power3.out';
+    var E = {
+      out:   'power3.out',
+      inOut: 'power2.inOut',
+      soft:  'power2.out',
+      expo:  'expo.out'
+    };
+    // Curvas custom premium (si el plugin cargó)
+    if (window.CustomEase) {
+      try {
+        CustomEase.create('rise', '0.16, 1, 0.3, 1');       // salida suave, "premium"
+        CustomEase.create('glide', '0.22, 1, 0.36, 1');
+        E.out = 'rise';
+        E.soft = 'glide';
+      } catch (e) {}
+    }
+    var D = { s: 0.6, m: 0.9, l: 1.15 }; // duraciones base
+
+    /* ---------- Scroll suave (lerp ligero, solo desktop no-touch) ---------- */
+    safe(function initSmoothScroll() {
+      var isTouch = window.matchMedia('(pointer: coarse)').matches;
+      if (isTouch || window.innerWidth < 1024) return; // móvil/tablet: scroll nativo
+      var current = window.scrollY, target = window.scrollY, ease = 0.09, ticking = false;
+
+      function onScroll() { target = window.scrollY; if (!ticking) { ticking = true; requestAnimationFrame(loop); } }
+      function loop() {
+        current += (target - current) * ease;
+        if (Math.abs(target - current) < 0.4) { current = target; ticking = false; }
+        // desplazamiento sub-pixel del contenido para suavizar (transform sobre el scroll real)
+        // Nota: usamos scroll nativo como fuente y solo suavizamos ScrollTrigger
+        ScrollTrigger.update();
+        if (ticking) requestAnimationFrame(loop);
+      }
+      // Este smoothing es sutil: sincroniza ScrollTrigger con un lerp para que el parallax
+      // y los pins se sientan más fluidos, sin secuestrar el scroll del navegador.
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }, 'smoothScroll');
+
+    /* ---------- Hero: entrada cinematográfica secuencial ---------- */
+    safe(function initHero() {
+      // GSAP toma control total del transform (evita conflicto con el translateY del CSS)
+      gsap.set('.hero-line', { yPercent: 110, y: 0 });
+      var tl = gsap.timeline({ defaults: { ease: E.out } });
+      tl.to('.hero-line', { yPercent: 0, duration: D.l, stagger: 0.09 }, 0.15)
+        .from('#hero-eyebrow', { y: 20, opacity: 0, duration: D.s }, 0.05)
+        .from('#hero-sub', { y: 26, opacity: 0, duration: D.m }, 0.75)
+        .from('#hero-actions > *', { y: 26, opacity: 0, duration: D.s, stagger: 0.1 }, 0.9)
+        .from('#hero-facts', { y: 20, opacity: 0, duration: D.s }, 1.1)
+        .from('#scroll-cue', { opacity: 0, duration: D.s }, 1.25);
+
+      var dot = document.getElementById('scroll-dot');
+      if (dot) gsap.to(dot, { attr: { y1: 12, y2: 16 }, repeat: -1, yoyo: true, duration: 1, ease: E.inOut });
+    }, 'hero');
+
+    /* ---------- Parallax del héroe (con leve fade a medida que sube) ---------- */
+    safe(function initParallax() {
+      var slides = document.getElementById('hero-slides');
+      if (slides) {
+        // Parallax vertical del contenedor (las imágenes hijas hacen su propio Ken Burns)
+        gsap.to(slides, {
+          yPercent: 12, ease: 'none',
+          scrollTrigger: { trigger: '#inicio', start: 'top top', end: 'bottom top', scrub: 1 }
+        });
+      }
+      // El contenido del hero se desplaza un poco más lento (profundidad)
+      var content = document.querySelector('#inicio .relative.z-10');
+      if (content) {
+        gsap.to(content, {
+          yPercent: 8, opacity: 0.85, ease: 'none',
+          scrollTrigger: { trigger: '#inicio', start: 'top top', end: 'bottom top', scrub: 1 }
+        });
+      }
+    }, 'parallax');
+
+    /* ---------- Reveals por scroll (fade-up + máscara + stagger) ---------- */
+    safe(function initReveals() {
+      // Reveal con máscara: el hijo sube desde detrás de un recorte
+      gsap.utils.toArray('.reveal-mask').forEach(function (wrap) {
+        var kids = wrap.children;
+        gsap.to(kids, {
+          yPercent: 0, opacity: 1, duration: D.l, ease: E.out, stagger: 0.08,
+          scrollTrigger: { trigger: wrap, start: 'top 90%', once: true }
+        });
+      });
+
+      // Reveal normal (fade-up) — elementos sueltos
+      gsap.utils.toArray('.reveal').forEach(function (el) {
+        if (el.closest('[data-stagger]')) return;
+        gsap.to(el, {
+          y: 0, opacity: 1, duration: D.m, ease: E.out,
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+        });
+      });
+
+      gsap.utils.toArray('.reveal-scale').forEach(function (el) {
+        gsap.to(el, {
+          scale: 1, opacity: 1, duration: D.l, ease: E.out,
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+        });
+      });
+
+      // Grupos con stagger
+      gsap.utils.toArray('[data-stagger]').forEach(function (group) {
+        var items = group.querySelectorAll('.reveal');
+        gsap.to(items, {
+          y: 0, opacity: 1, duration: D.m, ease: E.out, stagger: 0.11,
+          scrollTrigger: { trigger: group, start: 'top 85%', once: true }
+        });
+      });
+    }, 'reveals');
+
+    /* ---------- Parallax sutil por secciones (profundidad) ---------- */
+    safe(function initSectionParallax() {
+      if (window.innerWidth < 768) return; // en móvil, nada de parallax por rendimiento
+      // El "4,7" gigante se mueve un poco más lento que su sección: sensación 3D
+      var score = document.getElementById('score-number');
+      if (score) {
+        gsap.fromTo(score, { yPercent: 6 }, {
+          yPercent: -6, ease: 'none',
+          scrollTrigger: { trigger: score, start: 'top bottom', end: 'bottom top', scrub: 1 }
+        });
+      }
+      // El mapa de ubicación entra con un leve parallax
+      var mapWrap = document.querySelector('#ubicacion iframe');
+      if (mapWrap) {
+        gsap.fromTo(mapWrap, { yPercent: 4 }, {
+          yPercent: -4, ease: 'none',
+          scrollTrigger: { trigger: '#ubicacion', start: 'top bottom', end: 'bottom top', scrub: 1 }
+        });
+      }
+    }, 'sectionParallax');
+
+    /* ---------- Contador de la nota (4,7) con easing premium ---------- */
+    safe(function initCounter() {
+      var el = document.getElementById('score-number');
+      if (!el) return;
+      var target = parseFloat(el.getAttribute('data-count')) || 4.7;
+      var obj = { v: 0 };
+      ScrollTrigger.create({
+        trigger: el, start: 'top 85%', once: true,
+        onEnter: function () {
+          gsap.to(obj, {
+            v: target, duration: 1.6, ease: E.expo,
+            onUpdate: function () { el.textContent = obj.v.toFixed(1).replace('.', ','); }
+          });
+          // pequeño "settle" de escala al terminar
+          gsap.fromTo(el, { scale: 0.94 }, { scale: 1, duration: 1.6, ease: E.out });
+        }
+      });
+    }, 'counter');
+
+    /* ---------- Estrellas de la reseña: aparecen una a una ---------- */
+    safe(function initStars() {
+      var stars = document.querySelectorAll('#opiniones .flex.gap-1 svg');
+      if (!stars.length) return;
+      gsap.from(stars, {
+        scale: 0, opacity: 0, transformOrigin: '50% 50%',
+        duration: 0.5, ease: 'back.out(2)', stagger: 0.08,
+        scrollTrigger: { trigger: stars[0], start: 'top 88%', once: true }
+      });
+    }, 'stars');
+
+    /* ---------- Magnetic buttons + brillo (sheen) ---------- */
+    safe(function initMagnetic() {
+      if (window.matchMedia('(pointer: coarse)').matches) return; // solo con ratón
+      var buttons = document.querySelectorAll('.btn');
+      buttons.forEach(function (btn) {
+        btn.classList.add('is-magnetic');
+        var strength = 0.28;
+        var xTo = gsap.quickTo(btn, 'x', { duration: 0.5, ease: E.out });
+        var yTo = gsap.quickTo(btn, 'y', { duration: 0.5, ease: E.out });
+        var sTo = gsap.quickTo(btn, 'scale', { duration: 0.5, ease: E.out });
+
+        btn.addEventListener('mouseenter', function () { sTo(1.03); });
+        btn.addEventListener('mousemove', function (e) {
+          var r = btn.getBoundingClientRect();
+          var mx = e.clientX - (r.left + r.width / 2);
+          var my = e.clientY - (r.top + r.height / 2);
+          xTo(mx * strength); yTo(my * strength - 2); // -2 = leve lift
+        });
+        btn.addEventListener('mouseleave', function () { xTo(0); yTo(0); sTo(1); });
+
+        // brillo que recorre el botón sólido
+        if (btn.classList.contains('btn-solid')) {
+          var sheen = document.createElement('span');
+          sheen.className = 'btn-sheen';
+          btn.appendChild(sheen);
+          btn.addEventListener('mouseenter', function () {
+            gsap.fromTo(sheen, { xPercent: 0, opacity: 0 },
+              { keyframes: [{ opacity: 0.8, duration: 0.05 }, { xPercent: 420, opacity: 0, duration: 0.7 }], ease: E.soft });
+          });
+        }
+      });
+    }, 'magnetic');
+
+    // Recalcular posiciones cuando las fuentes/imágenes terminen de cargar
+    window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+  });
+</script>
+
+</body>
+</html>
