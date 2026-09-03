@@ -1962,6 +1962,9 @@
             <input id="rsv-phone" type="tel" class="rsv-input" placeholder="600 000 000" autocomplete="tel" inputmode="tel" required>
             <p class="rsv-error" data-for="rsv-phone">Introduce un teléfono válido (9 dígitos).</p>
           </div>
+          <p id="rsv-send-error" class="hidden text-sm mt-2" style="color:#E0736A">
+            No hemos podido enviar la reserva. Inténtalo de nuevo o llámanos al 934 40 90 28.
+          </p>
         </div>
       </div>
 
@@ -2304,7 +2307,7 @@
           '<span class="rsv-chip">' + ico.users + state.guests + (state.guests===1?' persona':' personas') + '</span>';
       }
 
-      /* ----- Envío ----- */
+      /* ----- Envío (Web3Forms) ----- */
       submitBtn.addEventListener('click', function () {
         if (!stepValid(3)) { Object.keys(fields).forEach(function(id){ checkField(id, true); }); return; }
         state.name = document.getElementById('rsv-name').value.trim();
@@ -2312,13 +2315,55 @@
         state.phone = document.getElementById('rsv-phone').value.trim();
 
         // Estado "enviando"
+        var errBoxReset = document.getElementById('rsv-send-error');
+        if (errBoxReset) errBoxReset.classList.add('hidden');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="rsv-spinner"></span>';
 
-        // NOTA: Aquí conectarías con tu backend / email / API de reservas.
-        // Se simula la confirmación con un pequeño retardo.
-        setTimeout(function () { showSuccess(); }, 900);
+        // Envío real de la reserva por email mediante Web3Forms
+        var payload = {
+          access_key: '36935247-24b3-4ed5-90bc-64bf35b2311b',
+          subject: 'Nueva reserva — El Tall Break',
+          from_name: 'Reservas El Tall Break',
+          'Nombre': state.name,
+          'Teléfono': state.phone,
+          'Email del cliente': state.email,
+          'Fecha': fmtDate(state.date),
+          'Hora': state.time,
+          'Comensales': state.guests + (state.guests === 1 ? ' persona' : ' personas'),
+          // Mensaje legible de respaldo
+          message:
+            'NUEVA SOLICITUD DE RESERVA\n\n' +
+            'Nombre: ' + state.name + '\n' +
+            'Teléfono: ' + state.phone + '\n' +
+            'Email: ' + state.email + '\n' +
+            'Fecha: ' + fmtDate(state.date) + '\n' +
+            'Hora: ' + state.time + '\n' +
+            'Comensales: ' + state.guests + (state.guests === 1 ? ' persona' : ' personas')
+        };
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data && data.success) {
+            showSuccess();
+          } else {
+            showSendError();
+          }
+        })
+        .catch(function () { showSendError(); });
       });
+
+      function showSendError() {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Confirmar reserva';
+        var errBox = document.getElementById('rsv-send-error');
+        if (errBox) { errBox.classList.remove('hidden'); }
+      }
 
       function showSuccess() {
         steps.forEach(function (st){ st.classList.remove('active'); });
